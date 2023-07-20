@@ -1,3 +1,4 @@
+import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
@@ -12,8 +13,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
+  authModal,
 }: {
   children: React.ReactNode;
+  authModal: React.ReactNode;
 }) {
   return (
     <html
@@ -24,7 +27,10 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-screen pt-12 bg-slate-50 antialiased">
+        {/* @ts-expect-error server component */}
         <Navbar />
+
+        {authModal}
         <div className="container max-w-7xl mx-auto h-full pt-12">
           {children}
         </div>
