@@ -6,7 +6,6 @@ import { HTMLAttributes, useState } from "react";
 import { signIn } from "next-auth/react";
 import { Icons } from "./Icons";
 import { toast } from "@/hooks/use-toast";
-import { Toaster } from "./ui/Toaster";
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -40,8 +39,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         {isLoading ? null : <Icons.google className="h-4 w-4 mr-2" />}
         Google
       </Button>
-
-      <Toaster />
     </div>
   );
 }
