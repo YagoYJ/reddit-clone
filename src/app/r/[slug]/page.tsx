@@ -1,4 +1,5 @@
 import { MiniCreatePost } from "@/components/MiniCreatePost";
+import PostFeed from "@/components/PostFeed";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -10,15 +11,13 @@ interface PageProps {
   };
 }
 
-export default async function Page({ params }: PageProps) {
+const page = async ({ params }: PageProps) => {
   const { slug } = params;
 
   const session = await getAuthSession();
 
   const subreddit = await db.subreddit.findFirst({
-    where: {
-      name: slug,
-    },
+    where: { name: slug },
     include: {
       posts: {
         include: {
@@ -27,7 +26,9 @@ export default async function Page({ params }: PageProps) {
           comments: true,
           subreddit: true,
         },
-
+        orderBy: {
+          createdAt: "desc",
+        },
         take: INFINITE_SCROLLING_PAGINATION_RESULTS,
       },
     },
@@ -40,10 +41,10 @@ export default async function Page({ params }: PageProps) {
       <h1 className="font-bold text-3xl md:text-4xl h-14">
         r/{subreddit.name}
       </h1>
-
       <MiniCreatePost session={session} />
-
-      {/* TODO: Show posts in user feed */}
+      <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} />
     </>
   );
-}
+};
+
+export default page;

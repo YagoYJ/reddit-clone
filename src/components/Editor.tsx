@@ -100,7 +100,7 @@ export function Editor({ subredditId }: EditorProps) {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(errors).length) {
+    if (Object.keys(errors)?.length) {
       for (const [_key, value] of Object.entries(errors)) {
         toast({
           title: "Something went wrong",
