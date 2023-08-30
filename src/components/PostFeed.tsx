@@ -44,7 +44,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
 
   useEffect(() => {
     if (entry?.isIntersecting) {
-      fetchNextPage(); // Load more posts when the last post comes into view
+      fetchNextPage();
     }
   }, [entry, fetchNextPage]);
 
@@ -52,7 +52,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
 
   return (
     <ul className="flex flex-col col-span-2 space-y-6">
-      {posts.map((post, index) => {
+      {posts?.map((post, index) => {
         const votesAmt = post.votes.reduce((acc, vote) => {
           if (vote.type === "UP") return acc + 1;
           if (vote.type === "DOWN") return acc - 1;
@@ -64,15 +64,14 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
         );
 
         if (index === posts.length - 1) {
-          // Add a ref to the last post in the list
           return (
             <li key={post.id} ref={ref}>
               <Post
                 post={post}
                 commentAmount={post.comments.length}
                 subredditName={post.subreddit.name}
-                // votesAmt={votesAmt}
-                // currentVote={currentVote}
+                votesAmount={votesAmt}
+                currentVote={currentVote}
               />
             </li>
           );
@@ -83,8 +82,8 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
               post={post}
               commentAmount={post.comments.length}
               subredditName={post.subreddit.name}
-              // votesAmt={votesAmt}
-              // currentVote={currentVote}
+              currentVote={currentVote}
+              votesAmount={votesAmt}
             />
           );
         }
